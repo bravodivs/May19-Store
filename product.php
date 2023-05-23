@@ -70,6 +70,20 @@
         if (!$conn) {
             die("<br>Connection failed: " . mysqli_connect_error());
         }
+
+        // Check Product already exsist.
+        $sqlProduct = "SELECT PNAME FROM product";
+        $result = $conn->query($sqlProduct);
+        // echo "->".$result;
+        while ($row = mysqli_fetch_assoc($result)) {
+            foreach ($row as $v){
+                if(strtolower($v)==strtolower($PName)){
+                    echo "<p class='warning'>Product already exsists</p>";
+                    return;
+                }
+            }
+        }
+
         // echo "<br> DB Connected successfully.<br>";
         $pName = mysqli_real_escape_string($conn, $PName);
         $pPrice = mysqli_real_escape_string($conn, $PPrice);

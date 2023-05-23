@@ -1,3 +1,9 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+
+
 <!-- taking the customer ID input -->
 <div class="container">
   <?php
@@ -39,8 +45,6 @@
 
     // TODO: debugging
     echo "\nset order id as " . $_SESSION['orderid'];
-
-
   }
   ?>
 </div>
@@ -80,7 +84,6 @@
 
       // TODO: debugging
       echo "\nset sub order id as " . $_SESSION['sub_ordid'];
-
     } else {
       echo "0 results";
     }
@@ -126,7 +129,6 @@
     }
     if ($flag == 1) {
       echo "<h4> Total Cost:" . $total . " </h4><br />";
-
     }
   }
   ?>
@@ -199,3 +201,77 @@
   ?>
   </table>
 </div>
+
+<!-- search bar -->
+<div class="container">
+  <form action="" method="post">
+    <input type="text" placeholder=" Search OrderID" id="search" name="search" required>
+    <button>
+      <i class="fa fa-search" style="font-size: 18px; color: #4caf50;">
+      </i>
+    </button>
+  </form>
+
+  <?php
+  if (isset($_POST["search"])) {
+
+    $search = $_POST["search"];
+    echo $search;
+    $conn = createSQLConnection();
+    $sql = "SELECT orders.orderid, orders.custid, product.PNAME, orders.quantity, orders.price, orders.sub_ordid
+    FROM orders
+    INNER JOIN product ON orders.pid=product.PID WHERE orders.orderid={$search}";
+    $result = $conn->query($sql);
+
+    if ($result!=null && $result->num_rows > 0) {
+      echo '<table>';
+      echo '<tr><th>orderID</th><th>customerID</th><th>productNAME</th><th>QUANTITY</th><th>PRICE</th><th>sub_orderID</th></tr>';
+
+      // change array to assoc because array return id too hence twice columns
+      while ($row = mysqli_fetch_assoc($result)) {
+        // echo "\nSearched OrderID\n";
+        echo "<tr>";
+        // if ($row['orderid'] == $_POST['search']) {
+          foreach ($row as $v)
+            echo "<td>" . $v . "</td> ";
+        // }
+        echo "</tr>";
+      }
+      echo '</table>';
+    } else
+      echo "<h4>Table is empty</h4>";
+  }
+  ?>
+</div>
+
+
+  <?php
+  function searchOrderID()
+  {
+    $conn = createSQLConnection();
+    $sql = 'SELECT PID, PNAME, PPRICE FROM product';
+    $sqlOrder = "SELECT * FROM orders";
+    $result = $conn->query($sql);
+    $resultOrder = $conn->query($sqlOrder);
+
+    if ($resultOrder->num_rows > 0) {
+      echo '<table>';
+      echo '<tr><th>orderID</th><th>cusID</th><th>PID</th><th>quatity</th><th>price</th><th>sub_ordid</th></tr>';
+
+      // change array to assoc because array return id too hence twice columns
+      while ($row = mysqli_fetch_assoc($resultOrder)) {
+        echo "\nSearched OrderID\n";
+        echo "<tr>";
+        if ($row['orderID'] == $_POST['search']) {
+          foreach ($row as $v)
+            echo "<td>" . $v . "</td> ";
+        }
+        echo "</tr>";
+      }
+      echo '</table>';
+    } else
+      echo "<h4>Table is empty</h4>";
+  }
+
+  ?>
+
