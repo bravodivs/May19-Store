@@ -137,15 +137,15 @@
 <!-- for showing the receipt -->
 <!-- calling a function on the click of a button -->
 <div class='container'>
-  <form method='post' action=''>
+  <!-- <form method='post' action=''>
     <input type='submit' class='button' name="show_receipt" value='Show Receipt' />
-  </form>
+  </form> -->
 
 
   <?php
   // TODO: recept logic
   // calling a function on the click of a button
-  if (array_key_exists('show_receipt', $_POST))
+  // if (array_key_exists('show_receipt', $_POST))
     show_reciept();
   function show_reciept()
   {

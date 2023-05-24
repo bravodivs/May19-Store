@@ -32,3 +32,8 @@
 
 11. extra space in search orders table in order.php
     solution: in the sql query, added the where clause to fetch only matching id rows.  
+
+12. while clicking the show reciept button, url is getting resubmitted hence dupicate key error.
+    solution: removed the button, showing the table directly
+
+13. after placing an order, if i search for a orderID, it is resubmitting the URL, resulting in duplicate key.
